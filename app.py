@@ -49,15 +49,18 @@ class ZakazkaRow(db.Model):
 
 
 # Initialize DB with admin user
-@app.before_first_request
+@app.before_serving
 def create_tables():
-    db.create_all()
-    if not User.query.filter_by(username=ADMIN_USERNAME).first():
-        admin = User(username=ADMIN_USERNAME,
-                     password_hash=generate_password_hash(ADMIN_PASSWORD),
-                     is_admin=True)
-        db.session.add(admin)
-        db.session.commit()
+    with app.app_context():
+        db.create_all()
+        if not User.query.filter_by(username=ADMIN_USERNAME).first():
+            admin = User(
+                username=ADMIN_USERNAME,
+                password_hash=generate_password_hash(ADMIN_PASSWORD),
+                is_admin=True
+            )
+            db.session.add(admin)
+            db.session.commit()
 
 
 # Routes
@@ -113,15 +116,17 @@ def edit_zakazka(zakazka_id):
         date = datetime.strptime(request.form["date"], "%Y-%m-%d").date()
         travel_time = float(request.form["travel_time"] or 0)
         km = float(request.form["km"] or 0)
-        row = ZakazkaRow(material_name=material_name,
-                         material_code=material_code,
-                         supplier=supplier,
-                         supplier_doc=supplier_doc,
-                         work_hours=work_hours,
-                         date=date,
-                         travel_time=travel_time,
-                         km=km,
-                         zakazka=zak)
+        row = ZakazkaRow(
+            material_name=material_name,
+            material_code=material_code,
+            supplier=supplier,
+            supplier_doc=supplier_doc,
+            work_hours=work_hours,
+            date=date,
+            travel_time=travel_time,
+            km=km,
+            zakazka=zak
+        )
         db.session.add(row)
         db.session.commit()
         return redirect(url_for("edit_zakazka", zakazka_id=zak.id))
