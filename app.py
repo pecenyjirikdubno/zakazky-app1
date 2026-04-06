@@ -159,20 +159,5 @@ def logout():
     return redirect(url_for("login"))
 
 
-# --- DATABASE INITIALIZATION ---
-def init_db():
-    with app.app_context():
-        db.create_all()
-        if not User.query.filter_by(username=ADMIN_USERNAME).first():
-            admin = User(username=ADMIN_USERNAME,
-                         password_hash=generate_password_hash(ADMIN_PASSWORD),
-                         is_admin=True)
-            db.session.add(admin)
-            db.session.commit()
-
-
-# --- RUN APP ---
-init_db()
-
 if __name__ == "__main__":
     app.run(debug=True)
