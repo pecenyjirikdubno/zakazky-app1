@@ -10,8 +10,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
 
 # Database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    "DATABASE_URL", "sqlite:///zakazky.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///zakazky.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -46,6 +45,17 @@ class ZakazkaRow(db.Model):
     travel_time = db.Column(db.Float)
     km = db.Column(db.Float)
     zakazka_id = db.Column(db.Integer, db.ForeignKey('zakazka.id'))
+
+
+# Initialize DB and admin user at startup
+with app.app_context():
+    db.create_all()
+    if not User.query.filter_by(username=ADMIN_USERNAME).first():
+        admin = User(username=ADMIN_USERNAME,
+                     password_hash=generate_password_hash(ADMIN_PASSWORD),
+                     is_admin=True)
+        db.session.add(admin)
+        db.session.commit()
 
 
 # Routes
