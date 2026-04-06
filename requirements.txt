@@ -1,15 +1,5 @@
-# Upgrade pip a wheel, aby se použily pre-built balíčky
-pip>=25.3
-setuptools
-wheel
-
-# NumPy musí být před pandas, aby se stáhl správný wheel
-numpy
-
-# Používáme pandas 2.0.3, kompatibilní s Python 3.14 a bez nutnosti kompilace
-pandas==2.0.3
-
-# Webové frameworky
 Flask==2.3.2
 Flask-SQLAlchemy==3.0.5
 Werkzeug==2.3.7
+pandas==2.0.3
+numpy==1.26.2
