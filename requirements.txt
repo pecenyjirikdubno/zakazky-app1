@@ -4,5 +4,4 @@ Werkzeug==2.3.7
 pandas==3.0.2 --only-binary :all:
 openpyxl
 psycopg2-binary
-setuptools>=68.0.0
-wheel
+gunicorn
