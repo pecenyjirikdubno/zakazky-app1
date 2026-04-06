@@ -1,7 +1,7 @@
 Flask==2.3.2
 Flask-SQLAlchemy==3.0.5
 Werkzeug==2.3.7
-pandas==2.0.3 --only-binary :all:
+pandas==3.0.2 --only-binary :all:
 openpyxl
 psycopg2-binary
 setuptools>=68.0.0
